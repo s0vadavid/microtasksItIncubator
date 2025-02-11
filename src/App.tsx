@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { Button } from './components/Button';
+import {NewComponent} from "./components/NewComponent";
 
 function App() {
   const [money, setMoney] = useState([
@@ -14,18 +15,24 @@ function App() {
     { banknote: "dollar", nominal: 50, number: "j123456789" },
     { banknote: "ruble", nominal: 50, number: "h123456789" },
   ]);
+
+  let currentMoney = money;
+
+  const [filter, setFilter] = useState('all')
+
+  if (filter === 'ruble') {
+      currentMoney = money.filter((currency) => currency.banknote === "ruble")
+  }
+  if (filter === 'dollar') {
+      currentMoney = money.filter((currency) => currency.banknote === "dollar")
+  }
+
+  let onClickFilterHandler = (buttonName: string) => {
+      setFilter(buttonName);
+  }
+
   return (
-    <ul>
-      {money.map((objFromMoneyArr) => {
-        return (
-          <li>
-            <span>{objFromMoneyArr.banknote}</span>
-            <span>{objFromMoneyArr.nominal}</span>
-            <span>{objFromMoneyArr.number}</span>
-          </li>
-        );
-      })}
-    </ul>
+      <NewComponent onClickFilterHandler={onClickFilterHandler} currentMoney={currentMoney}/>
   );
 }
 
